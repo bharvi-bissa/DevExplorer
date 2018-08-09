@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import axios from "axios";
 import classnames from "classnames";
 import { connect } from "react-redux";
 import { registeruser } from "../../actions/authActions";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 
 class Register extends Component {
   constructor() {
@@ -12,12 +13,18 @@ class Register extends Component {
       email: "",
       password: "",
       password2: "",
-      errors: ""
+      errors: {}
     };
 
     //  we can do this on individual fields also
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
   }
 
   onChange(e) {
@@ -34,20 +41,15 @@ class Register extends Component {
       password2: this.state.password2
     };
 
-    this.props.registeruser(newUser);
+    this.props.registeruser(newUser, this.props.history);
 
     //  console.log(newUser);
-    // axios
-    //   .post("/api/users/register", newUser)
-    //   .then(res => console.log(res.data))
-    //   .catch(err => this.setState({ errors: err.response.data }));
   }
   render() {
     const errors = this.state.errors;
-    const { user } = this.props.auth;
+
     return (
       <div className="register">
-        {user ? user.name : null}
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
@@ -130,11 +132,17 @@ class Register extends Component {
   }
 }
 
+Register.prototypes = {
+  registeruser: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
 const mapStateToProps = state => ({
   // auth of state.auth comes from rootreducer
-  auth: state.auth
+  auth: state.auth,
+  errors: state.errors
 });
 export default connect(
   mapStateToProps,
   { registeruser }
-)(Register);
+)(withRouter(Register));
