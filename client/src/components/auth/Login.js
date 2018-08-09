@@ -3,18 +3,26 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import classnames from "classnames";
+
 class Login extends Component {
   constructor() {
     super();
     this.state = {
       email: "",
       password: "",
-      errors: ""
+      errors: {}
     };
 
     //  we can do this on individual fields also
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  // if authenticated then redirect to dashboard
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/dashboard");
+    }
   }
 
   componentWillReceiveProps(nextProps) {
