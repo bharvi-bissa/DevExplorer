@@ -12,7 +12,10 @@ import Footer from "./components/Footer";
 import Landing from "./components/Landing";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import Dashboard from "./components/dashboard/Dashboard";
+
 import store from "./store";
+import { clearCurrentProfile } from "./actions/profileActions";
 
 // check for token
 if (localStorage.jwtToken) {
@@ -30,6 +33,7 @@ if (localStorage.jwtToken) {
     // Logout user
     store.dispatch(logoutUser());
     //clear current profile
+    store.dispatch(clearCurrentProfile());
     //redirect to login
     window.location.href = "/login";
   }
@@ -45,6 +49,7 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/Login" component={Login} />
+            <Route exact path="/Dashboard" component={Dashboard} />
             <Footer />
           </div>
         </BrowserRouter>
