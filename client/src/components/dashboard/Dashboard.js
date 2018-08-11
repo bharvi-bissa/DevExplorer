@@ -1,37 +1,33 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { getCurrentProfile } from "../../actions/profileActions";
-import loader from "../common/loader.gif";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getCurrentProfile } from '../../actions/profileActions';
+import Spinner from '../common/Spinner';
 
 class Dashboard extends Component {
   componentDidMount() {
     this.props.getCurrentProfile();
   }
+
   render() {
     const { user } = this.props.auth;
     const { profile, loading } = this.props.profile;
 
     let dashboardContent;
+
     if (profile === null || loading) {
-      dashboardContent = (
-        <img
-          src={loader}
-          alt="loading ..."
-          style={{ width: "50px", margin: "auto", display: "block" }}
-        />
-      );
+      dashboardContent = <Spinner />;
     } else {
-      // check if logged in user has profile data
+      // Check if logged in user has profile data
       if (Object.keys(profile).length > 0) {
-        dashboardContent = <h4>display profile</h4>;
+        dashboardContent = <h4>TODO: DISPLAY PROFILE</h4>;
       } else {
-        //user is logged in but has no profile
+        // User is logged in but has no profile
         dashboardContent = (
           <div>
-            <p className="lead text-muted">Welcome {user.name} </p>
-            <p>You have not created a profile, please add some info</p>
+            <p className="lead text-muted">Welcome {user.name}</p>
+            <p>You have not yet setup a profile, please add some info</p>
             <Link to="/create-profile" className="btn btn-lg btn-info">
               Create Profile
             </Link>
@@ -56,9 +52,9 @@ class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
-  profile: PropTypes.object.isRequired,
+  getCurrentProfile: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  getCurrentProfile: PropTypes.func.isRequired
+  profile: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -66,7 +62,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(
-  mapStateToProps,
-  { getCurrentProfile }
-)(Dashboard);
+export default connect(mapStateToProps, { getCurrentProfile })(Dashboard);
