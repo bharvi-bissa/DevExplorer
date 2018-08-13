@@ -35,6 +35,7 @@ class CreateProfile extends Component {
   }
 
   componentDidMount() {
+    // the value get into the state
     this.props.getCurrentProfile();
   }
 
@@ -43,7 +44,7 @@ class CreateProfile extends Component {
       this.setState({ errors: nextProps.errors });
     }
 
-    if (nextProps.profile) {
+    if (nextProps.profile.profile) {
       const profile = nextProps.profile.profile;
 
       // bring skills array back to csv
